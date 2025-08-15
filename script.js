@@ -93,10 +93,10 @@ function allocateFixedExpense(category, amount, nextPageId) {
         paycheckData.transportation = amount;
     }
 
-    // Update wants page when going to it
-    if (nextPageId === 'wants-page') {
+    // Update savings page when going to it
+    if (nextPageId === 'savings-page') {
         setTimeout(() => {
-            updateWantsPage();
+            updateWantMoneyPage();
         }, 300);
     }
 
@@ -129,6 +129,13 @@ function allocateExpense(category, nextPageId) {
     }
 
     paycheckData[category] = amount;
+
+    // Update final summary page if going to summary
+    if (nextPageId === 'summary-page') {
+        const finalRemaining = calculateRemaining();
+        document.getElementById('final-remaining').textContent = finalRemaining.toFixed(2);
+    }
+
     goToPage(nextPageId);
 }
 

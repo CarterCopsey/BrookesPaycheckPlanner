@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        
+
 
         <!-- Food Page -->
         <div id="food-page" class="page">
@@ -80,31 +80,11 @@
                 </div>
                 <h2>Insurance + Septa + Subscriptions</h2>
                 <p>Allocate $174 to CashApp right now! (Insurance: 80, Septa: 50, Subscriptions: 44)</p>
-                <button class="btn-primary" onclick="allocateFixedExpense('transportation', 174, 'wants-page')">Continue</button>
+                <button class="btn-primary" onclick="allocateFixedExpense('transportation', 174, 'savings-page')">Continue</button>
             </div>
         </div>
 
-        
 
-        <!-- Wants Page -->
-        <div id="wants-page" class="page">
-            <div class="content">
-                <div class="progress-bar">
-                    <div class="progress" style="width: 75%"></div>
-                </div>
-                <div class="balance-display">
-                    <span>Available: $</span><span id="balance-wants">0.00</span>
-                </div>
-                <h2>Want Money</h2>
-                <p id="wants-message">YOU STILL HAVE $<span id="remaining-amount">0.00</span> LEFT! 15% is a reasonable amount to set aside for your wants for the next 2 weeks. 15% is $<span id="fifteen-percent">0.00</span></p>
-                <div class="input-group">
-                    <span class="currency">$</span>
-                    <input type="number" id="wants-input" placeholder="0.00" step="0.01">
-                </div>
-                <p class="tip">How much are you setting aside for your wants for the next two weeks? Allocate this somewhere.</p>
-                <button class="btn-primary" onclick="allocateExpense('wants', 'savings-page')">Continue</button>
-            </div>
-        </div>
 
         <!-- Want Money Allocation Page -->
         <div id="savings-page" class="page">
@@ -134,7 +114,7 @@
                 <div class="celebration">🧌</div>
                 <p>$<span id="final-remaining">0.00</span></p>
                 <p>Split the rest up between your debt and savings account. Try and take care of your debt first but allocate the money now!</p>
-                
+
                 <div class="final-message">
                     <p>yayyyyy! I'm so proud of you amazing girl!! I love you!!</p>
                 </div>
