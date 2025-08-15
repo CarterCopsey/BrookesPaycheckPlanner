@@ -25,11 +25,11 @@ function parseAmount(value) {
 }
 
 function calculateRemaining() {
-    const allocated = paycheckData.housing + 
-                     paycheckData.utilities + 
-                     paycheckData.food + 
-                     paycheckData.transportation + 
-                     paycheckData.otherNeeds + 
+    const allocated = paycheckData.housing +
+                     paycheckData.utilities +
+                     paycheckData.food +
+                     paycheckData.transportation +
+                     paycheckData.otherNeeds +
                      paycheckData.wants;
     return paycheckData.income - allocated;
 }
@@ -38,21 +38,21 @@ function calculateRemaining() {
 function goToPage(pageId) {
     const currentPage = document.querySelector('.page.active');
     const nextPage = document.getElementById(pageId);
-    
+
     if (currentPage) {
         currentPage.classList.add('exit');
         setTimeout(() => {
             currentPage.classList.remove('active', 'exit');
         }, 500);
     }
-    
+
     setTimeout(() => {
         nextPage.classList.add('active');
         nextPage.classList.add('fade-in');
-        
+
         // Update balance displays
         updateBalanceDisplays();
-        
+
         // Initialize Feather icons for new page
         if (typeof feather !== 'undefined') {
             feather.replace();
@@ -64,12 +64,12 @@ function goToPage(pageId) {
 function setIncome() {
     const incomeInput = document.getElementById('income-input');
     const income = parseAmount(incomeInput.value);
-    
+
     if (income <= 0) {
         showValidationMessage(incomeInput, "Please enter a valid income amount. Every dollar matters! 💕");
         return;
     }
-    
+
     paycheckData.income = income;
     goToPage('housing-page');
 }
@@ -78,27 +78,27 @@ function setIncome() {
 function allocateExpense(category, nextPageId) {
     const input = document.getElementById(`${category}-input`);
     const amount = parseAmount(input.value);
-    
+
     if (amount < 0) {
         showValidationMessage(input, "Amounts can't be negative, beautiful! 💕");
         return;
     }
-    
-    const currentAllocated = paycheckData.housing + 
-                            paycheckData.utilities + 
-                            paycheckData.food + 
-                            paycheckData.transportation + 
-                            paycheckData.otherNeeds + 
+
+    const currentAllocated = paycheckData.housing +
+                            paycheckData.utilities +
+                            paycheckData.food +
+                            paycheckData.transportation +
+                            paycheckData.otherNeeds +
                             paycheckData.wants;
-    
+
     const newTotal = currentAllocated - paycheckData[category] + amount;
-    
+
     if (newTotal > paycheckData.income) {
         const available = paycheckData.income - (currentAllocated - paycheckData[category]);
         showValidationMessage(input, `That's more than you have available ($${available.toFixed(2)}). Let's adjust this together! 💫`);
         return;
     }
-    
+
     paycheckData[category] = amount;
     goToPage(nextPageId);
 }
@@ -106,13 +106,13 @@ function allocateExpense(category, nextPageId) {
 // Update Balance Displays
 function updateBalanceDisplays() {
     const remaining = calculateRemaining();
-    
+
     // Update all balance displays
     const balanceElements = document.querySelectorAll('[id^="balance-"]');
     balanceElements.forEach(element => {
         element.textContent = remaining.toFixed(2);
     });
-    
+
     // Update savings page message if on that page
     if (document.getElementById('savings-page').classList.contains('active')) {
         updateSavingsMessage(remaining);
@@ -122,7 +122,7 @@ function updateBalanceDisplays() {
 // Update Savings Message
 function updateSavingsMessage(remaining) {
     const messageElement = document.getElementById('savings-message');
-    
+
     if (remaining > 0) {
         messageElement.innerHTML = `Look at that! You have <strong>$${remaining.toFixed(2)}</strong> left to secure your beautiful future. 🌟`;
         messageElement.style.color = '#38a169';
@@ -137,22 +137,22 @@ function updateSavingsMessage(remaining) {
 
 // Complete Planning
 function completePlanning() {
-    const emergency = parseAmount(document.getElementById('emergency-input').value);
     const debt = parseAmount(document.getElementById('debt-input').value);
     const goals = parseAmount(document.getElementById('goals-input').value);
-    
+
     const remaining = calculateRemaining();
-    const savingsTotal = emergency + debt + goals;
-    
-    if (savingsTotal > remaining) {
-        alert(`You're trying to allocate $${savingsTotal.toFixed(2)} but only have $${remaining.toFixed(2)} remaining. Let's adjust these amounts! 💕`);
+    const remainingAfterWants = remaining - paycheckData.wants;
+    const savingsTotal = debt + goals;
+
+    if (savingsTotal > remainingAfterWants) {
+        alert("BAD GIRL! DO IT NOW");
         return;
     }
-    
-    paycheckData.emergency = emergency;
+
+    paycheckData.emergency = 0;
     paycheckData.debt = debt;
     paycheckData.goals = goals;
-    
+
     generateSummary();
     goToPage('summary-page');
 }
@@ -161,7 +161,7 @@ function completePlanning() {
 function generateSummary() {
     const summaryContainer = document.getElementById('summary-details');
     const finalRemaining = calculateRemaining() - paycheckData.emergency - paycheckData.debt - paycheckData.goals;
-    
+
     const summaryItems = [
         { label: '💰 Income', amount: paycheckData.income, category: 'income' },
         { label: '🏠 Housing', amount: paycheckData.housing, category: 'expense' },
@@ -175,7 +175,7 @@ function generateSummary() {
         { label: '🎯 Future Goals', amount: paycheckData.goals, category: 'savings' },
         { label: '💸 Unallocated', amount: finalRemaining, category: 'remaining' }
     ];
-    
+
     summaryContainer.innerHTML = summaryItems
         .filter(item => item.amount > 0 || item.category === 'income')
         .map(item => `
@@ -193,7 +193,7 @@ function showValidationMessage(input, message) {
     if (existingMessage) {
         existingMessage.remove();
     }
-    
+
     // Create new validation message
     const messageElement = document.createElement('div');
     messageElement.className = 'validation-message';
@@ -207,10 +207,10 @@ function showValidationMessage(input, message) {
         border-left: 3px solid #e53e3e;
     `;
     messageElement.textContent = message;
-    
+
     input.parentNode.appendChild(messageElement);
     input.focus();
-    
+
     // Remove message after 5 seconds
     setTimeout(() => {
         if (messageElement.parentNode) {
@@ -234,17 +234,17 @@ function restart() {
         debt: 0,
         goals: 0
     };
-    
+
     // Clear all inputs
     const inputs = document.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
         input.value = '';
     });
-    
+
     // Remove any validation messages
     const validationMessages = document.querySelectorAll('.validation-message');
     validationMessages.forEach(msg => msg.remove());
-    
+
     // Go back to welcome page
     goToPage('welcome-page');
 }
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof feather !== 'undefined') {
         feather.replace();
     }
-    
+
     // Add event listeners for real-time balance updates
     const inputs = document.querySelectorAll('input[type="number"]');
     inputs.forEach(input => {
@@ -265,13 +265,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (existingMessage) {
                 existingMessage.remove();
             }
-            
+
             // Update balance displays for savings page
             if (document.getElementById('savings-page').classList.contains('active')) {
                 updateBalanceDisplays();
             }
         });
-        
+
         // Enter key to continue
         input.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
