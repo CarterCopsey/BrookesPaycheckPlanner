@@ -106,58 +106,40 @@
             </div>
         </div>
 
-        <!-- Savings & Debt Page -->
+        <!-- Want Money Allocation Page -->
         <div id="savings-page" class="page">
             <div class="content">
                 <div class="progress-bar">
                     <div class="progress" style="width: 90%"></div>
                 </div>
-                <div class="balance-display">
-                    <span>Remaining After Want Money: $</span><span id="balance-final">0.00</span>
-                </div>
-                <h2>Building Your Future 🌱</h2>
-                <p id="savings-message">Split the rest up between your debt and savings account. Try and take care of your debt first but pay it off now!</p>
-                <div class="savings-options">
-                    <div class="option-card">
-                        <h3>🎯 Extra Debt Payment</h3>
-                        <p>Get closer to financial freedom</p>
-                        <div class="input-group">
-                            <span class="currency">$</span>
-                            <input type="number" id="debt-input" placeholder="0.00" step="0.01">
-                        </div>
-                    </div>
-                    <div class="option-card">
-                        <h3>🏆 Savings Account</h3>
-                        <p>Build your future</p>
-                        <div class="input-group">
-                            <span class="currency">$</span>
-                            <input type="number" id="goals-input" placeholder="0.00" step="0.01">
-                        </div>
+                <p id="want-money-message">YOU STILL HAVE $<span id="remaining-for-wants">0.00</span> LEFT! 15% is a reasonable amount to set aside for your wants for the next 2 weeks. 15% is $<span id="fifteen-percent-calc">0.00</span></p>
+                <div class="option-card">
+                    <h3>Want Money</h3>
+                    <p>How much are you setting aside for your wants for the next two weeks? Allocate this somewhere.</p>
+                    <div class="input-group">
+                        <span class="currency">$</span>
+                        <input type="number" id="final-wants-input" placeholder="0.00" step="0.01">
                     </div>
                 </div>
-                <button class="btn-primary" onclick="completePlanning()">Complete My Plan</button>
+                <button class="btn-primary" onclick="allocateFinalWants()">Continue</button>
             </div>
         </div>
 
-        <!-- Summary Page -->
+        <!-- Final Summary Page -->
         <div id="summary-page" class="page">
             <div class="content">
                 <div class="progress-bar">
                     <div class="progress" style="width: 100%"></div>
                 </div>
                 <div class="celebration">🧌</div>
-                <h2>You Did It, Beautiful!</h2>
-                <p>Look at what you've accomplished! You've created a thoughtful plan for your money.</p>
+                <p>$<span id="final-remaining">0.00</span></p>
+                <p>Split the rest up between your debt and savings account. Try and take care of your debt first but allocate the money now!</p>
                 
-                <div id="summary-details" class="summary-grid">
-                    <!-- Summary will be populated by JavaScript -->
-                </div>
-
                 <div class="final-message">
                     <p>yayyyyy! I'm so proud of you amazing girl!! I love you!!</p>
                 </div>
 
-                <button class="btn-primary" onclick="restart()">Plan Another Paycheck</button>
+                <button class="btn-primary" onclick="restart()">Continue</button>
             </div>
         </div>
     </div>

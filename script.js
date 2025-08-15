@@ -136,7 +136,7 @@ function allocateExpense(category, nextPageId) {
 function updateWantsPage() {
     const remaining = calculateRemaining();
     const fifteenPercent = remaining * 0.15;
-    
+
     document.getElementById('remaining-amount').textContent = remaining.toFixed(2);
     document.getElementById('fifteen-percent').textContent = fifteenPercent.toFixed(2);
 }
@@ -156,11 +156,44 @@ function updateBalanceDisplays() {
         updateWantsPage();
     }
 
-    // Update final balance display for savings page
+    // Update savings page (want money allocation) if on that page
     if (document.getElementById('savings-page').classList.contains('active')) {
-        const remainingAfterWants = remaining - paycheckData.wants;
-        document.getElementById('balance-final').textContent = remainingAfterWants.toFixed(2);
+        updateWantMoneyPage();
     }
+}
+
+// Update Want Money Page with remaining amount and 15% calculation
+function updateWantMoneyPage() {
+    const remaining = calculateRemaining();
+    const fifteenPercent = remaining * 0.15;
+
+    document.getElementById('remaining-for-wants').textContent = remaining.toFixed(2);
+    document.getElementById('fifteen-percent-calc').textContent = fifteenPercent.toFixed(2);
+}
+
+// Allocate Final Want Money
+function allocateFinalWants() {
+    const input = document.getElementById('final-wants-input');
+    const amount = parseAmount(input.value);
+    const remaining = calculateRemaining();
+
+    if (amount < 0) {
+        showValidationMessage(input, "BAD GIRL! DO IT NOW");
+        return;
+    }
+
+    if (amount > remaining) {
+        showValidationMessage(input, "BAD GIRL! DO IT NOW");
+        return;
+    }
+
+    paycheckData.wants += amount;
+
+    // Update final summary page
+    const finalRemaining = remaining - amount;
+    document.getElementById('final-remaining').textContent = finalRemaining.toFixed(2);
+
+    goToPage('summary-page');
 }
 
 // Update Savings Message
