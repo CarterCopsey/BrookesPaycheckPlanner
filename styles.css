@@ -35,12 +35,14 @@ body {
     transform: translateX(100px);
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    visibility: hidden;
 }
 
 .page.active {
     opacity: 1;
     transform: translateX(0);
     pointer-events: all;
+    visibility: visible;
 }
 
 .page.exit {
