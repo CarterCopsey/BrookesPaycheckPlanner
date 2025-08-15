@@ -74,13 +74,42 @@ function setIncome() {
     goToPage('housing-page');
 }
 
-// Expense Allocation
+// Fixed Expense Allocation (for rent, groceries, transportation)
+function allocateFixedExpense(category, amount, nextPageId) {
+    // Map categories to the correct data fields
+    const categoryMap = {
+        'housing': ['housing', 'utilities'], // Rent + Utilities = $375
+        'food': ['food'], // Groceries = $50
+        'transportation': ['transportation'] // Insurance + Septa + Subscriptions = $174
+    };
+
+    // Allocate the fixed amount
+    if (category === 'housing') {
+        paycheckData.housing = 275;
+        paycheckData.utilities = 100;
+    } else if (category === 'food') {
+        paycheckData.food = amount;
+    } else if (category === 'transportation') {
+        paycheckData.transportation = amount;
+    }
+
+    // Update wants page when going to it
+    if (nextPageId === 'wants-page') {
+        setTimeout(() => {
+            updateWantsPage();
+        }, 300);
+    }
+
+    goToPage(nextPageId);
+}
+
+// Expense Allocation (for wants and other user-input expenses)
 function allocateExpense(category, nextPageId) {
     const input = document.getElementById(`${category}-input`);
     const amount = parseAmount(input.value);
 
     if (amount < 0) {
-        showValidationMessage(input, "Amounts can't be negative, beautiful! 💕");
+        showValidationMessage(input, "BAD GIRL! DO IT NOW");
         return;
     }
 
@@ -95,12 +124,21 @@ function allocateExpense(category, nextPageId) {
 
     if (newTotal > paycheckData.income) {
         const available = paycheckData.income - (currentAllocated - paycheckData[category]);
-        showValidationMessage(input, `That's more than you have available ($${available.toFixed(2)}). Let's adjust this together! 💫`);
+        showValidationMessage(input, "BAD GIRL! DO IT NOW");
         return;
     }
 
     paycheckData[category] = amount;
     goToPage(nextPageId);
+}
+
+// Update Wants Page with remaining amount and 15% calculation
+function updateWantsPage() {
+    const remaining = calculateRemaining();
+    const fifteenPercent = remaining * 0.15;
+    
+    document.getElementById('remaining-amount').textContent = remaining.toFixed(2);
+    document.getElementById('fifteen-percent').textContent = fifteenPercent.toFixed(2);
 }
 
 // Update Balance Displays
@@ -113,9 +151,15 @@ function updateBalanceDisplays() {
         element.textContent = remaining.toFixed(2);
     });
 
-    // Update savings page message if on that page
+    // Update wants page if on that page
+    if (document.getElementById('wants-page').classList.contains('active')) {
+        updateWantsPage();
+    }
+
+    // Update final balance display for savings page
     if (document.getElementById('savings-page').classList.contains('active')) {
-        updateSavingsMessage(remaining);
+        const remainingAfterWants = remaining - paycheckData.wants;
+        document.getElementById('balance-final').textContent = remainingAfterWants.toFixed(2);
     }
 }
 
