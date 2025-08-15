@@ -1,4 +1,4 @@
-wa// Application State
+// Application State
 let paycheckData = {
     income: 0,
     housing: 0,
