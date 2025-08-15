@@ -158,10 +158,7 @@ function updateBalanceDisplays() {
         element.textContent = remaining.toFixed(2);
     });
 
-    // Update wants page if on that page
-    if (document.getElementById('wants-page').classList.contains('active')) {
-        updateWantsPage();
-    }
+    // Update wants page if on that page (removed since wants-page doesn't exist)
 
     // Update savings page (want money allocation) if on that page
     if (document.getElementById('savings-page').classList.contains('active')) {
