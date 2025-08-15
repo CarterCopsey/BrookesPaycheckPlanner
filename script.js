@@ -5,14 +5,10 @@ let paycheckData = {
     utilities: 0,
     food: 0,
     transportation: 0,
-    otherNeeds: 0,
-    wants: 0,
-    emergency: 0,
-    debt: 0,
-    goals: 0
+    wants: 0
 };
 
-// Utility Functions
+// ===== UTILITY FUNCTIONS =====
 function formatCurrency(amount) {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -29,12 +25,11 @@ function calculateRemaining() {
                      paycheckData.utilities +
                      paycheckData.food +
                      paycheckData.transportation +
-                     paycheckData.otherNeeds +
                      paycheckData.wants;
     return paycheckData.income - allocated;
 }
 
-// Page Navigation
+// ===== PAGE NAVIGATION =====
 function goToPage(pageId) {
     const currentPage = document.querySelector('.page.active');
     const nextPage = document.getElementById(pageId);
@@ -60,7 +55,7 @@ function goToPage(pageId) {
     }, 250);
 }
 
-// Income Setting
+// ===== INCOME SETTING =====
 function setIncome() {
     const incomeInput = document.getElementById('income-input');
     const income = parseAmount(incomeInput.value);
@@ -74,16 +69,9 @@ function setIncome() {
     goToPage('housing-page');
 }
 
-// Fixed Expense Allocation (for rent, groceries, transportation)
+// ===== FIXED EXPENSE ALLOCATION =====
 function allocateFixedExpense(category, amount, nextPageId) {
     // Map categories to the correct data fields
-    const categoryMap = {
-        'housing': ['housing', 'utilities'], // Rent + Utilities = $375
-        'food': ['food'], // Groceries = $50
-        'transportation': ['transportation'] // Insurance + Septa + Subscriptions = $174
-    };
-
-    // Allocate the fixed amount
     if (category === 'housing') {
         paycheckData.housing = 275;
         paycheckData.utilities = 100;
@@ -103,79 +91,7 @@ function allocateFixedExpense(category, amount, nextPageId) {
     goToPage(nextPageId);
 }
 
-// Expense Allocation (for wants and other user-input expenses)
-function allocateExpense(category, nextPageId) {
-    const input = document.getElementById(`${category}-input`);
-    const amount = parseAmount(input.value);
-
-    if (amount < 0) {
-        showValidationMessage(input, "BAD GIRL! DO IT NOW");
-        return;
-    }
-
-    const currentAllocated = paycheckData.housing +
-                            paycheckData.utilities +
-                            paycheckData.food +
-                            paycheckData.transportation +
-                            paycheckData.otherNeeds +
-                            paycheckData.wants;
-
-    const newTotal = currentAllocated - paycheckData[category] + amount;
-
-    if (newTotal > paycheckData.income) {
-        const available = paycheckData.income - (currentAllocated - paycheckData[category]);
-        showValidationMessage(input, "BAD GIRL! DO IT NOW");
-        return;
-    }
-
-    paycheckData[category] = amount;
-
-    // Update final summary page if going to summary
-    if (nextPageId === 'summary-page') {
-        const finalRemaining = calculateRemaining();
-        document.getElementById('final-remaining').textContent = finalRemaining.toFixed(2);
-    }
-
-    goToPage(nextPageId);
-}
-
-// Update Wants Page with remaining amount and 15% calculation
-function updateWantsPage() {
-    const remaining = calculateRemaining();
-    const fifteenPercent = remaining * 0.15;
-
-    document.getElementById('remaining-amount').textContent = remaining.toFixed(2);
-    document.getElementById('fifteen-percent').textContent = fifteenPercent.toFixed(2);
-}
-
-// Update Balance Displays
-function updateBalanceDisplays() {
-    const remaining = calculateRemaining();
-
-    // Update all balance displays
-    const balanceElements = document.querySelectorAll('[id^="balance-"]');
-    balanceElements.forEach(element => {
-        element.textContent = remaining.toFixed(2);
-    });
-
-    // Update wants page if on that page (removed since wants-page doesn't exist)
-
-    // Update savings page (want money allocation) if on that page
-    if (document.getElementById('savings-page').classList.contains('active')) {
-        updateWantMoneyPage();
-    }
-}
-
-// Update Want Money Page with remaining amount and 15% calculation
-function updateWantMoneyPage() {
-    const remaining = calculateRemaining();
-    const fifteenPercent = remaining * 0.15;
-
-    document.getElementById('remaining-for-wants').textContent = remaining.toFixed(2);
-    document.getElementById('fifteen-percent-calc').textContent = fifteenPercent.toFixed(2);
-}
-
-// Allocate Final Want Money
+// ===== WANTS ALLOCATION =====
 function allocateFinalWants() {
     const input = document.getElementById('final-wants-input');
     const amount = parseAmount(input.value);
@@ -193,81 +109,38 @@ function allocateFinalWants() {
 
     paycheckData.wants += amount;
 
-    // Update final summary page
+    // Update final page
     const finalRemaining = remaining - amount;
     document.getElementById('final-remaining').textContent = finalRemaining.toFixed(2);
 
-    goToPage('summary-page');
+    goToPage('final-page');
 }
 
-// Update Savings Message
-function updateSavingsMessage(remaining) {
-    const messageElement = document.getElementById('savings-message');
-
-    if (remaining > 0) {
-        messageElement.innerHTML = `Look at that! You have <strong>$${remaining.toFixed(2)}</strong> left to secure your beautiful future. 🌟`;
-        messageElement.style.color = '#38a169';
-    } else if (remaining === 0) {
-        messageElement.innerHTML = 'Perfect! You\'ve allocated every dollar thoughtfully. You\'re already winning! 🎯';
-        messageElement.style.color = '#805ad5';
-    } else {
-        messageElement.innerHTML = `Looks like you're a little over budget by <strong>$${Math.abs(remaining).toFixed(2)}</strong>. No worries - let's go back and adjust together! 💪`;
-        messageElement.style.color = '#e53e3e';
-    }
-}
-
-// Complete Planning
-function completePlanning() {
-    const debt = parseAmount(document.getElementById('debt-input').value);
-    const goals = parseAmount(document.getElementById('goals-input').value);
-
+// ===== BALANCE UPDATES =====
+function updateBalanceDisplays() {
     const remaining = calculateRemaining();
-    const remainingAfterWants = remaining - paycheckData.wants;
-    const savingsTotal = debt + goals;
 
-    if (savingsTotal > remainingAfterWants) {
-        alert("BAD GIRL! DO IT NOW");
-        return;
+    // Update all balance displays
+    const balanceElements = document.querySelectorAll('[id^="balance-"]');
+    balanceElements.forEach(element => {
+        element.textContent = remaining.toFixed(2);
+    });
+
+    // Update wants page if on that page
+    if (document.getElementById('savings-page').classList.contains('active')) {
+        updateWantMoneyPage();
     }
-
-    paycheckData.emergency = 0;
-    paycheckData.debt = debt;
-    paycheckData.goals = goals;
-
-    generateSummary();
-    goToPage('summary-page');
 }
 
-// Generate Summary
-function generateSummary() {
-    const summaryContainer = document.getElementById('summary-details');
-    const finalRemaining = calculateRemaining() - paycheckData.emergency - paycheckData.debt - paycheckData.goals;
+function updateWantMoneyPage() {
+    const remaining = calculateRemaining();
+    const fifteenPercent = remaining * 0.15;
 
-    const summaryItems = [
-        { label: '💰 Income', amount: paycheckData.income, category: 'income' },
-        { label: '🏠 Housing', amount: paycheckData.housing, category: 'expense' },
-        { label: '⚡ Utilities', amount: paycheckData.utilities, category: 'expense' },
-        { label: '🥗 Food', amount: paycheckData.food, category: 'expense' },
-        { label: '🚗 Transportation', amount: paycheckData.transportation, category: 'expense' },
-        { label: '🧴 Other Needs', amount: paycheckData.otherNeeds, category: 'expense' },
-        { label: '🌟 Wants', amount: paycheckData.wants, category: 'expense' },
-        { label: '🛡️ Emergency Fund', amount: paycheckData.emergency, category: 'savings' },
-        { label: '💪 Extra Debt Payment', amount: paycheckData.debt, category: 'savings' },
-        { label: '🎯 Future Goals', amount: paycheckData.goals, category: 'savings' },
-        { label: '💸 Unallocated', amount: finalRemaining, category: 'remaining' }
-    ];
-
-    summaryContainer.innerHTML = summaryItems
-        .filter(item => item.amount > 0 || item.category === 'income')
-        .map(item => `
-            <div class="summary-item ${item.category}">
-                <span class="summary-label">${item.label}</span>
-                <span class="summary-amount">${formatCurrency(item.amount)}</span>
-            </div>
-        `).join('');
+    document.getElementById('remaining-for-wants').textContent = remaining.toFixed(2);
+    document.getElementById('fifteen-percent-calc').textContent = fifteenPercent.toFixed(2);
 }
 
-// Validation Message
+// ===== VALIDATION =====
 function showValidationMessage(input, message) {
     // Remove existing validation message
     const existingMessage = input.parentNode.querySelector('.validation-message');
@@ -300,7 +173,7 @@ function showValidationMessage(input, message) {
     }, 5000);
 }
 
-// Restart Function
+// ===== RESTART FUNCTION =====
 function restart() {
     // Reset all data
     paycheckData = {
@@ -309,11 +182,7 @@ function restart() {
         utilities: 0,
         food: 0,
         transportation: 0,
-        otherNeeds: 0,
-        wants: 0,
-        emergency: 0,
-        debt: 0,
-        goals: 0
+        wants: 0
     };
 
     // Clear all inputs
@@ -330,7 +199,7 @@ function restart() {
     goToPage('welcome-page');
 }
 
-// Auto-save input values as user types
+// ===== EVENT LISTENERS =====
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Feather icons
     if (typeof feather !== 'undefined') {

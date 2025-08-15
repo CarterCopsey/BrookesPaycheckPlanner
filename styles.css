@@ -1,4 +1,4 @@
-/* Reset and Base Styles */
+/* ===== RESET AND BASE STYLES ===== */
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +20,7 @@ body {
     position: relative;
 }
 
-/* Page Transitions */
+/* ===== PAGE TRANSITIONS ===== */
 .page {
     position: absolute;
     top: 0;
@@ -50,7 +50,7 @@ body {
     transform: translateX(-100px);
 }
 
-/* Content Styling */
+/* ===== CONTENT STYLING ===== */
 .content {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -63,7 +63,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Typography */
+/* ===== TYPOGRAPHY ===== */
 h1 {
     font-size: 2.5rem;
     font-weight: 600;
@@ -118,7 +118,7 @@ p {
     margin: 1rem 0;
 }
 
-/* Icons and Decorations */
+/* ===== ICONS AND DECORATIONS ===== */
 .heart {
     font-size: 3rem;
     margin-bottom: 1rem;
@@ -142,7 +142,7 @@ p {
     60% { transform: translateY(-5px); }
 }
 
-/* Progress Bar */
+/* ===== PROGRESS BAR ===== */
 .progress-bar {
     width: 100%;
     height: 6px;
@@ -159,7 +159,7 @@ p {
     transition: width 0.5s ease;
 }
 
-/* Balance Display */
+/* ===== BALANCE DISPLAY ===== */
 .balance-display {
     background: linear-gradient(135deg, #38a169, #48bb78);
     color: white;
@@ -171,7 +171,7 @@ p {
     box-shadow: 0 8px 16px rgba(56, 161, 105, 0.3);
 }
 
-/* Input Groups */
+/* ===== INPUT GROUPS ===== */
 .input-group {
     position: relative;
     margin: 2rem 0;
@@ -214,10 +214,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
+    appearance: textfield;
     -moz-appearance: textfield;
 }
 
-/* Buttons */
+/* ===== BUTTONS ===== */
 .btn-primary {
     background: linear-gradient(135deg, #667eea, #764ba2);
     color: white;
@@ -241,13 +242,7 @@ input[type="number"] {
     transform: translateY(0);
 }
 
-/* Savings Options */
-.savings-options {
-    display: grid;
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
-
+/* ===== OPTION CARDS ===== */
 .option-card {
     background: rgba(255, 255, 255, 0.7);
     border: 2px solid rgba(160, 174, 192, 0.2);
@@ -271,41 +266,7 @@ input[type="number"] {
     color: #718096;
 }
 
-/* Summary Grid */
-.summary-grid {
-    display: grid;
-    gap: 1rem;
-    margin: 2rem 0;
-    text-align: left;
-}
-
-.summary-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 12px;
-    border-left: 4px solid #667eea;
-}
-
-.summary-item.savings {
-    border-left-color: #38a169;
-    background: rgba(56, 161, 105, 0.1);
-}
-
-.summary-label {
-    font-weight: 500;
-    color: #4a5568;
-}
-
-.summary-amount {
-    font-weight: 600;
-    color: #2d3748;
-    font-size: 1.1rem;
-}
-
-/* Final Message */
+/* ===== FINAL MESSAGE ===== */
 .final-message {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
     padding: 2rem;
@@ -321,7 +282,7 @@ input[type="number"] {
     font-weight: 500;
 }
 
-/* Responsive Design */
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .page {
         padding: 1rem;
@@ -368,7 +329,7 @@ input[type="number"] {
     }
 }
 
-/* Loading Animation */
+/* ===== ANIMATIONS ===== */
 .fade-in {
     animation: fadeIn 0.5s ease-in;
 }
