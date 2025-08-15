@@ -1,4 +1,4 @@
-// Application State
+wa// Application State
 let paycheckData = {
     income: 0,
     housing: 0,
@@ -61,7 +61,7 @@ function setIncome() {
     const income = parseAmount(incomeInput.value);
 
     if (income <= 0) {
-        showValidationMessage(incomeInput, "Please enter a valid income amount. Every dollar matters! 💕");
+        showValidationMessage(incomeInput, "BAD GIRL! DO BETTER!");
         return;
     }
 
