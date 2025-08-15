@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Paycheck Planner 💕</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.29.0/feather.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Page -->
+        <div id="welcome-page" class="page active">
+            <div class="content">
+                <div class="heart">💝</div>
+                <h1>Your Paycheck Planner</h1>
+                <p class="subtitle">Take a deep breath, beautiful. Let's organize your finances together, one step at a time. You've got this! 💪</p>
+                <button class="btn-primary" onclick="goToPage('income-page')">Let's Start Together</button>
+            </div>
+        </div>
+
+        <!-- Income Input Page -->
+        <div id="income-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 10%"></div>
+                </div>
+                <h2>Your Beautiful Paycheck 💰</h2>
+                <p>First, let's celebrate your hard work! What's your take-home pay for this period?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="income-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="encouragement">Every dollar you earn is a testament to your strength and dedication! ✨</p>
+                <button class="btn-primary" onclick="setIncome()">Continue with Love</button>
+            </div>
+        </div>
+
+        <!-- Housing Page -->
+        <div id="housing-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 20%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-housing">0.00</span>
+                </div>
+                <h2>Your Safe Haven 🏠</h2>
+                <p>Let's secure your beautiful home first. What do you spend on rent or mortgage?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="housing-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 Ideally 25-30% of your income. You deserve a place that feels like home!</p>
+                <button class="btn-primary" onclick="allocateExpense('housing', 'utilities-page')">Secure My Home</button>
+            </div>
+        </div>
+
+        <!-- Utilities Page -->
+        <div id="utilities-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 30%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-utilities">0.00</span>
+                </div>
+                <h2>Keeping the Lights On ⚡</h2>
+                <p>Now for utilities - electricity, water, internet, phone. What do these essentials cost you?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="utilities-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 These keep your sanctuary comfortable and connected to the world!</p>
+                <button class="btn-primary" onclick="allocateExpense('utilities', 'food-page')">Power Up My Life</button>
+            </div>
+        </div>
+
+        <!-- Food Page -->
+        <div id="food-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 40%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-food">0.00</span>
+                </div>
+                <h2>Nourishing Your Body 🥗</h2>
+                <p>Food is fuel for your amazing body and soul. What do you budget for groceries and essentials?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="food-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 You deserve fresh, healthy food that makes you feel vibrant and strong!</p>
+                <button class="btn-primary" onclick="allocateExpense('food', 'transportation-page')">Feed My Soul</button>
+            </div>
+        </div>
+
+        <!-- Transportation Page -->
+        <div id="transportation-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 50%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-transportation">0.00</span>
+                </div>
+                <h2>Getting Around 🚗</h2>
+                <p>Car payments, gas, insurance, or public transport - what keeps you moving forward?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="transportation-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 Every journey you take is progress toward your dreams!</p>
+                <button class="btn-primary" onclick="allocateExpense('transportation', 'other-needs-page')">Keep Me Moving</button>
+            </div>
+        </div>
+
+        <!-- Other Needs Page -->
+        <div id="other-needs-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 60%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-other-needs">0.00</span>
+                </div>
+                <h2>Other Essential Needs 🧴</h2>
+                <p>Personal care, healthcare, insurance, minimum debt payments - what else do you need?</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="other-needs-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 Taking care of yourself is never selfish - it's essential!</p>
+                <button class="btn-primary" onclick="allocateExpense('other-needs', 'wants-page')">Care for Myself</button>
+            </div>
+        </div>
+
+        <!-- Wants Page -->
+        <div id="wants-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 75%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Available: $</span><span id="balance-wants">0.00</span>
+                </div>
+                <h2>Your Beautiful Wants 🌟</h2>
+                <p>Now for the fun part! Dining out, entertainment, hobbies, shopping - you deserve joy!</p>
+                <div class="input-group">
+                    <span class="currency">$</span>
+                    <input type="number" id="wants-input" placeholder="0.00" step="0.01">
+                </div>
+                <p class="tip">💡 Happiness and joy are important too! You work hard and deserve to enjoy life.</p>
+                <button class="btn-primary" onclick="allocateExpense('wants', 'savings-page')">Treat Myself</button>
+            </div>
+        </div>
+
+        <!-- Savings & Debt Page -->
+        <div id="savings-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 90%"></div>
+                </div>
+                <div class="balance-display">
+                    <span>Remaining: $</span><span id="balance-final">0.00</span>
+                </div>
+                <h2>Building Your Future 🌱</h2>
+                <p id="savings-message">Look at that! You have money left to secure your beautiful future.</p>
+                <div class="savings-options">
+                    <div class="option-card">
+                        <h3>💰 Emergency Fund</h3>
+                        <p>Build a safety net that gives you peace of mind</p>
+                        <div class="input-group">
+                            <span class="currency">$</span>
+                            <input type="number" id="emergency-input" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                    <div class="option-card">
+                        <h3>🎯 Extra Debt Payment</h3>
+                        <p>Get closer to financial freedom</p>
+                        <div class="input-group">
+                            <span class="currency">$</span>
+                            <input type="number" id="debt-input" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                    <div class="option-card">
+                        <h3>🏆 Future Goals</h3>
+                        <p>Save for dreams and aspirations</p>
+                        <div class="input-group">
+                            <span class="currency">$</span>
+                            <input type="number" id="goals-input" placeholder="0.00" step="0.01">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="completePlanning()">Complete My Plan</button>
+            </div>
+        </div>
+
+        <!-- Summary Page -->
+        <div id="summary-page" class="page">
+            <div class="content">
+                <div class="progress-bar">
+                    <div class="progress" style="width: 100%"></div>
+                </div>
+                <div class="celebration">🎉</div>
+                <h2>You Did It, Beautiful!</h2>
+                <p>Look at what you've accomplished! You've created a thoughtful plan for your money.</p>
+                
+                <div id="summary-details" class="summary-grid">
+                    <!-- Summary will be populated by JavaScript -->
+                </div>
+
+                <div class="final-message">
+                    <p>Remember: You are capable, strong, and worthy of financial peace. Every small step you take is building a brighter future. I'm so proud of you! 💕</p>
+                </div>
+
+                <button class="btn-primary" onclick="restart()">Plan Another Paycheck</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="script.js"></script>
+</body>
+</html>
